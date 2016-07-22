@@ -38,5 +38,5 @@ date: 2016-07-21
     **按在计算机中的作用分类**
 
     可分为主存储器，辅助存储器和缓冲存储器。如下图：
-
+    [https://siegezhang.github.io/img/storage.png](https://siegezhang.github.io/img/storage.png)
 
