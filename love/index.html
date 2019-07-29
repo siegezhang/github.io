@@ -295,7 +295,7 @@
 			this.length += this.v.length();
 			this.r *= 0.99;
 			this.v.rotate(Branch.random(-angle, angle)); //.mult(0.996);
-			if (this.r &lt; 0.8 || this.generation > 10) {
+			if (this.r < 0.8 || this.generation > 10) {
 				this.tree.removeBranch(this);
 				var l = new Leaf(this.p, 10, this.color, this.tree.ctx);
 				l.render();
@@ -312,7 +312,7 @@
 			if (p > 0) {
 				var n = Math.round(Branch.random(1, 3));
 				this.tree.stat.fork += n - 1;
-				for (var i = 0; i &lt; n; i++) {
+				for (var i = 0; i < n; i++) {
 					Branch.clone(this);
 				}
 				this.tree.removeBranch(this);
@@ -345,7 +345,7 @@
 			branches.push(b);
 		};
 		this.removeBranch = function (b) {
-			for (var i = 0; i &lt; branches.length; i++) {
+			for (var i = 0; i < branches.length; i++) {
 				if (branches[i] === b) {
 					branches.splice(i, 1);
 					return;
@@ -357,7 +357,7 @@
 			timer = setInterval(function () {
 				fn.apply(that, arguments);
 				if (branches.length > 0) {
-					for (var i = 0; i &lt; branches.length; i++) {
+					for (var i = 0; i < branches.length; i++) {
 						branches[i].grow();
 					}
 				}
@@ -396,7 +396,7 @@
 		// tree
 		var t = new Tree();
 		t.init(ctx);
-		for (var i = 0; i &lt; 3; i++) {
+		for (var i = 0; i < 3; i++) {
 			new Branch(new Vector(center_x, canvas_height), new Vector(Math.random(-1, 1), -y_speed), 15 / stretch_factor, Branch.randomrgba(0, 255, 0.3), t);
 		}
 		t.render(function () {
