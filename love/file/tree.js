@@ -171,7 +171,7 @@
 		var y_speed = 3 / stretch_factor;
 		var $statMsg = $("#statMsg");
 		// tx
-		var canvas = $('#canvas')[0];
+		var canvas = $('#tree')[0];
 		canvas.width = canvas_width;
 		canvas.height = canvas_height;
 		var ctx = canvas.getContext("2d");
