@@ -186,6 +186,4 @@
 			$statMsg.html(this.stat.fork);
 		});
 	}
-	$(function () {
-		init();
-	});
+
