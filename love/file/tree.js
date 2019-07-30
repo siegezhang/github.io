@@ -36,40 +36,40 @@
 		render: function () {
 			var that = this;
 			var ctx = this.ctx;
-			var f = Branch.random(1, 2)
+			var f = SpringBranch.random(1, 2)
 			for (var i = 0; i < 5; i++) {
 				(function (r) {
 					setTimeout(function () {
 						ctx.beginPath();
 						ctx.fillStyle = that.color;
 						ctx.moveTo(that.p.x, that.p.y);
-						ctx.arc(that.p.x, that.p.y, r, 0, Branch.circle, true);
+						ctx.arc(that.p.x, that.p.y, r, 0, SpringBranch.circle, true);
 						ctx.fill();
 					}, r * 60);
 				})(i);
 			}
 		}
 	}
-	var Branch = function (p, v, r, c, t) {
+	var SpringBranch = function (p, v, r, c, t) {
 		this.p = p || null;
 		this.v = v || null;
 		this.r = r || 0;
 		this.length = 0;
 		this.generation = 1;
-		this.tree = t || null;
+		this.springTree = t || null;
 		this.color = c || 'rgba(255,255,255,1.0)';
 		this.register();
 	};
-	Branch.prototype = {
+	SpringBranch.prototype = {
 		register: function () {
-			this.tree.addBranch(this);
+			this.springTree.addSpringBranch(this);
 		},
 		draw: function () {
-			var ctx = this.tree.ctx;
+			var ctx = this.springTree.ctx;
 			ctx.beginPath();
 			ctx.fillStyle = this.color;
 			ctx.moveTo(this.p.x, this.p.y);
-			ctx.arc(this.p.x, this.p.y, this.r, 0, Branch.circle, true);
+			ctx.arc(this.p.x, this.p.y, this.r, 0, SpringBranch.circle, true);
 			ctx.fill();
 		},
 		modify: function () {
@@ -77,10 +77,10 @@
 			this.p.add(this.v);
 			this.length += this.v.length();
 			this.r *= 0.99;
-			this.v.rotate(Branch.random(-angle, angle)); //.mult(0.996);
+			this.v.rotate(SpringBranch.random(-angle, angle)); //.mult(0.996);
 			if (this.r < 0.8 || this.generation > 10) {
-				this.tree.removeBranch(this);
-				var l = new Leaf(this.p, 10, this.color, this.tree.ctx);
+				this.springTree.removeSpringBranch(this);
+				var l = new Leaf(this.p, 10, this.color, this.springTree.ctx);
 				l.render();
 			}
 		},
@@ -90,44 +90,44 @@
 			this.fork();
 		},
 		fork: function () {
-			var p = this.length - Branch.random(100, 200);
+			var p = this.length - SpringBranch.random(100, 200);
 			// + (this.generation * 10);
 			if (p > 0) {
-				var n = Math.round(Branch.random(1, 3));
-				this.tree.stat.fork += n - 1;
+				var n = Math.round(SpringBranch.random(1, 3));
+				this.springTree.stat.fork += n - 1;
 				for (var i = 0; i < n; i++) {
-					Branch.clone(this);
+					SpringBranch.clone(this);
 				}
-				this.tree.removeBranch(this);
+				this.springTree.removeSpringBranch(this);
 			}
 		}
 	};
-	Branch.circle = 2 * Math.PI;
-	Branch.random = function (min, max) {
+	SpringBranch.circle = 2 * Math.PI;
+	SpringBranch.random = function (min, max) {
 		return Math.random() * (max - min) + min;
 	};
-	Branch.clone = function (b) {
-		var r = new Branch(new Vector(b.p.x, b.p.y), new Vector(b.v.x, b.v.y), b.r, b.color, b.tree);
+	SpringBranch.clone = function (b) {
+		var r = new SpringBranch(new Vector(b.p.x, b.p.y), new Vector(b.v.x, b.v.y), b.r, b.color, b.springTree);
 		r.generation = b.generation + 1;
 		return r;
 	};
-	Branch.rgba = function (r, g, b, a) {
+	SpringBranch.rgba = function (r, g, b, a) {
 		return 'rgba(' + r + ',' + g + ',' + b + ',' + a + ')';
 	};
-	Branch.randomrgba = function (min, max, a) {
-		return Branch.rgba(Math.round(Branch.random(min, max)), Math.round(Branch.random(min, max)), Math.round(Branch.random(min, max)), a);
+	SpringBranch.randomrgba = function (min, max, a) {
+		return SpringBranch.rgba(Math.round(SpringBranch.random(min, max)), Math.round(SpringBranch.random(min, max)), Math.round(SpringBranch.random(min, max)), a);
 	};
-	var Tree = function () {
+	var SpringTree = function () {
 		var branches = [];
 		var timer;
 		this.stat = {
 			fork: 0,
 			length: 0
 		};
-		this.addBranch = function (b) {
+		this.addSpringBranch = function (b) {
 			branches.push(b);
 		};
-		this.removeBranch = function (b) {
+		this.removeSpringBranch = function (b) {
 			for (var i = 0; i < branches.length; i++) {
 				if (branches[i] === b) {
 					branches.splice(i, 1);
@@ -171,16 +171,16 @@
 		var y_speed = 3 / stretch_factor;
 		var $statMsg = $("#statMsg");
 		// tx
-		var canvas = $('#tree')[0];
+		var canvas = $('#springTree')[0];
 		canvas.width = canvas_width;
 		canvas.height = canvas_height;
 		var ctx = canvas.getContext("2d");
 		ctx.globalCompositeOperation = "lighter";
-		// tree
-		var t = new Tree();
+		// springTree
+		var t = new SpringTree();
 		t.init(ctx);
 		for (var i = 0; i < 3; i++) {
-			new Branch(new Vector(center_x, canvas_height), new Vector(Math.random(-1, 1), -y_speed), 15 / stretch_factor, Branch.randomrgba(0, 255, 0.3), t);
+			new SpringBranch(new Vector(center_x, canvas_height), new Vector(Math.random(-1, 1), -y_speed), 15 / stretch_factor, SpringBranch.randomrgba(0, 255, 0.3), t);
 		}
 		t.render(function () {
 			$statMsg.html(this.stat.fork);
