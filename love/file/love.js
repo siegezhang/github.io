@@ -647,6 +647,7 @@ $(window).load(function(){
             canvas.css("background", "#ffe");
             $await(Jscex.Async.sleep(300));
             canvas.css("background", "none");
+            canvg('canvas1', '../love/file/cony.svg');
         }));
 
         var jumpAnimate = eval(Jscex.compile("async", function () {
@@ -657,6 +658,7 @@ $(window).load(function(){
                 foot.draw();
                 $await(Jscex.Async.sleep(25));
             }
+
         }));
 
         var textAnimate = eval(Jscex.compile("async", function () {
@@ -680,11 +682,11 @@ $(window).load(function(){
             $await(growAnimate());
             $await(flowAnimate());
             $await(moveAnimate());
-
             textAnimate().start();
-
             $await(jumpAnimate());
+
         }));
 
         runAsync().start();
+
     });
