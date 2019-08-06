@@ -663,7 +663,7 @@ $(window).load(function(){
 
         var textAnimate = eval(Jscex.compile("async", function () {
 		    var together = new Date();
-		    together.setFullYear(2019,2 , 28); 			//时间年月日
+		    together.setFullYear(2019,1 , 28); 			//时间年月日
 		    together.setHours(8);						//小时
 		    together.setMinutes(0);					//分钟
 		    together.setSeconds(0);					//秒前一位
